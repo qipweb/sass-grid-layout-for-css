@@ -1,0 +1,304 @@
+//------------------------------------------------------------------------------
+//  Пример подключения сетки
+//  1. Подключите ваш фаил к документу Пример
+//
+//  @import "../_sass/sass-grid-layout.scss";
+//
+//  2.Примечание !! для всех элементов на странице нужно указать 
+//  * { box-sizing: border-box; }
+//
+//  3. Вызывайте Миксины по очереди !!!
+//  Или просто с копируйте строки ниже 
+//
+//  .container { @include container ;}
+//  .row       { @include row ;}
+//  @include may-col ;
+//  @include may-col-sm ;
+//  @include may-col-md ;
+//  @include may-col-lg ;
+//  @include may-col-xl ;
+//  @include may-col-xxl ;
+//------------------------------------------------------------------------------
+//  Общие переменные и Breakpoints
+//  Значение $grid-columns: -это число колонок по умолчанию = 12 !!
+//  если нужна сетка с другим числом колонок
+//  измените $grid-columns: задав своё значение
+//  для примера на 10 колонок $grid-columns: 10 !default;
+//--------------------------------------------------------------------------
+$screen-xs:                   0 !default;
+$screen-sm:                   480px !default;
+$screen-md:                   768px !default;
+$screen-lg:                   992px !default;
+$screen-xl:                   1230px !default;
+$screen-xxl:                  1830px !default;
+
+$container-sm:                100% !default;
+$container-md:                100% !default;
+$container-lg:                ($screen-lg - 30) !default;
+$container-xl:                ($screen-xl - 30) !default;
+$container-xxl:               ($screen-xxl - 30) !default;
+
+$grid-columns:                12 !default;
+$grid-gutter-width:           30px !default;
+
+$position:                    relative;
+
+$col:                         col;
+$col-sm:                      col-sm;
+$col-md:                      col-md;
+$col-lg:                      col-lg;
+$col-xl:                      col-xl;
+$col-xxl:                     col-xxl;
+
+//------------------------------------------------------------------------------
+//  Генератор правил для контейнера
+//------------------------------------------------------------------------------
+//  Пример вызова:
+//  Название ( вашего класса ) пример ниже !!
+//  .container { @include container; }
+
+@mixin container (
+  $xs-grid-gutter:  $grid-gutter-width,
+  $sm-grid-gutter:  $grid-gutter-width,
+  $md-grid-gutter:  $grid-gutter-width,
+  $lg-grid-gutter:  $grid-gutter-width,
+  $xl-grid-gutter:  $grid-gutter-width
+) {
+  display: block;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+
+  @if ($xs-grid-gutter != 0) {
+    padding-left: ($xs-grid-gutter / 2);
+    padding-right: ($xs-grid-gutter / 2);
+  }
+
+  @media (min-width: $screen-sm) {
+    width: $container-sm;
+
+    @if ($sm-grid-gutter != $xs-grid-gutter) {
+      padding-left: ($sm-grid-gutter / 2);
+      padding-right: ($sm-grid-gutter / 2);
+    }
+  }
+
+  @media (min-width: $screen-md) {
+    width: $container-md;
+
+    @if ($md-grid-gutter != $sm-grid-gutter) {
+      padding-left: ($md-grid-gutter / 2);
+      padding-right: ($md-grid-gutter / 2);
+    }
+  }
+
+  @media (min-width: $screen-lg) {
+    width: $container-lg;
+
+    @if ($lg-grid-gutter != $md-grid-gutter) {
+      padding-left: ($lg-grid-gutter / 2);
+      padding-right: ($lg-grid-gutter / 2);
+    }
+  }
+
+  @media (min-width: $screen-xl) {
+    width: $container-xl;
+
+    @if ($xl-grid-gutter != $lg-grid-gutter) {
+      padding-left: ($xl-grid-gutter / 2);
+      padding-right: ($xl-grid-gutter / 2);
+    }
+  }
+}
+
+//------------------------------------------------------------------------------
+//  Генератор правил для прямого родителя модульной сетки
+//------------------------------------------------------------------------------
+//  Принимает:         По умолчанию:        Пояснение:
+//  $sm-grid-gutter:   $grid-gutter-width   промежуток между колонками SM-сетки
+//  $md-grid-gutter:   $grid-gutter-width   промежуток между колонками MD-сетки
+//  $lg-grid-gutter:   $grid-gutter-width   промежуток между колонками LG-сетки
+//  $xl-grid-gutter:   $grid-gutter-width   промежуток между колонками XL-сетки
+//  $xxl-grid-gutter:  $grid-gutter-width   промежуток между колонками XXL-сетки
+//------------------------------------------------------------------------------
+//  Пример вызова:
+//  Название вашего класса пример 
+//  .row { @include row; }
+
+@mixin row (
+  $xs-grid-gutter:  $grid-gutter-width,
+  $sm-grid-gutter:  $grid-gutter-width,
+  $md-grid-gutter:  $grid-gutter-width,
+  $lg-grid-gutter:  $grid-gutter-width,
+  $xl-grid-gutter:  $grid-gutter-width
+) {
+  display: flex;
+  flex-wrap: wrap;
+
+  & > * { // stylelint-disable-line  selector-combinator-blacklist, plugin/selector-bem-pattern
+    flex-basis: 100%;
+  }
+
+  @if ($xs-grid-gutter != 0) {
+    margin-left: ($xs-grid-gutter / -2);
+    margin-right: ($xs-grid-gutter / -2);
+  }
+
+  @if ($sm-grid-gutter != $xs-grid-gutter) {
+
+    @media (min-width: $screen-sm) {
+      margin-left: ($sm-grid-gutter / -2);
+      margin-right: ($sm-grid-gutter / -2);
+    }
+  }
+
+  @if ($md-grid-gutter != $sm-grid-gutter) {
+
+    @media (min-width: $screen-md) {
+      margin-left: ($md-grid-gutter / -2);
+      margin-right: ($md-grid-gutter / -2);
+    }
+  }
+
+  @if ($lg-grid-gutter != $md-grid-gutter) {
+
+    @media (min-width: $screen-lg) {
+      margin-left: ($lg-grid-gutter / -2);
+      margin-right: ($lg-grid-gutter / -2);
+    }
+  }
+
+  @if ($xl-grid-gutter != $lg-grid-gutter) {
+
+    @media (min-width: $screen-xl) {
+      margin-left: ($xl-grid-gutter / -2);
+      margin-right: ($xl-grid-gutter / -2);
+    }
+  }
+}
+
+//----------------------------------------------------------------------------
+//  Генератор ширины колонки
+//----------------------------------------------------------------------------
+//  Принимает:         По умолчанию:        Пояснение:
+//  padding:           0 15px;              промежуток между колонками сетки
+//  можете указать свой пример ( @include may-col-sm(0, 10px) ; )
+//----------------------------------------------------------------------------
+//----------------------------------------------------------------------------
+// Пример вызова:
+//---------------
+//  @include may-col ;      (Формирует класс  .col-*    от 1 до 12)
+//  @include may-col-sm ;   (Формирует класс  .col-sm-* от 1 до 12)
+//  @include may-col-md ;   (Формирует класс  .col-md-* от 1 до 12)
+//  @include may-col-lg ;   (Формирует класс  .col-lg-* от 1 до 12)
+//  @include may-col-xl ;   (Формирует класс  .col-xl-* от 1 до 12)
+//  @include may-col-xxl;   (Формирует класс  .col-xl-* от 1 до 12)
+//-----------------------------------------------------------------
+//  По умолчанию колонки (class="col") занимают равную ширину в родителе
+//  или 100% от оставшегося расстояния 
+//----------------------------------------------------------------- 
+//  Падинг можно задать свой при вызове миксина пример ниже
+//  @include may-col-sm(0 10px); в скобках указываеи значения через пробел
+//  первое чило ( 0 - указывает падинг сверху и снизу)
+//  второе число ( 10px - указывает падинг слева и справа)
+//-----------------------------------------------------------------
+
+@mixin may-col ($padding: 0 15px, $column: 1, $columns: $grid-columns) {
+
+.#{$col} { 
+  position: $position;
+  width: 100%;
+  flex: 1 1 0;
+  padding: $padding;
+}
+
+    @for $i from 1 through $grid-columns {
+    
+      .#{$col}-#{$i} { 
+          max-width: 100% / 12 * $i;
+          $width: (100% / $columns) * $i;
+          flex: 1 1 $width;
+          position: $position;
+          padding: $padding;
+      }
+    }
+
+}
+
+@mixin may-col-xxl ($padding: 0 15px, $column: 1, $columns: $grid-columns) {
+  @media (min-width: $screen-xxl) {
+    @for $i from 1 through $grid-columns {
+
+      .#{$col-xxl}-#{$i} { 
+        max-width: 100% / 12 * $i;
+        $width: (100% / $columns) * $i;
+        flex: 0 0 $width;
+        position: $position;
+        padding: $padding;
+      }
+    }
+  }
+}
+
+
+@mixin may-col-xl ($padding: 0 15px, $column: 1, $columns: $grid-columns) {
+  @media (min-width: $screen-xl) {
+    @for $i from 1 through $grid-columns {
+
+      .#{$col-xl}-#{$i} { 
+        max-width: 100% / 12 * $i;
+        $width: (100% / $columns) * $i;
+        flex: 0 0 $width;
+        position: $position;
+        padding: $padding;
+      }
+    }
+  }
+}
+
+
+@mixin may-col-lg ($padding: 0 15px, $column: 1, $columns: $grid-columns) {
+  @media (min-width: $screen-lg) {
+    @for $i from 1 through $grid-columns {
+
+      .#{$col-lg}-#{$i} { 
+        max-width: 100% / 12 * $i;
+        $width: (100% / $columns) * $i;
+        flex: 0 0 $width;
+        position: $position;
+        padding: $padding;
+      }
+    }
+  }
+}
+
+
+@mixin may-col-md ($padding: 0 15px, $column: 1, $columns: $grid-columns) {
+  @media (min-width: $screen-md) {
+    @for $i from 1 through $grid-columns {
+      
+      .#{$col-md}-#{$i} { 
+        max-width: 100% / 12 * $i;
+        $width: (100% / $columns) * $i;
+        flex: 0 0 $width;
+        position: $position;
+        padding: $padding;
+      }
+    }
+  }
+}
+
+@mixin may-col-sm ($padding: 0 15px, $column: 1, $columns: $grid-columns) {
+  @media (min-width: $screen-sm) {
+    @for $i from 1 through $grid-columns {
+      
+      .#{$col-sm}-#{$i} { 
+        max-width: 100% / 12 * $i;
+        $width: (100% / $columns) * $i;
+        flex: 0 0 $width;
+        position: $position;
+        padding: $padding;
+      }
+    }
+  }
+}
